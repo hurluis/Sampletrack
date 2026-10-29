@@ -122,9 +122,17 @@ class _SampleListPageState extends State<SampleListPage> {
     }
 
     // Resumen por estado
-    final List<Widget> summaryRows = [];
+    final List<Widget> summaryChildren = [
+      Text(
+        'Resumen por estado',
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+      ),
+      const SizedBox(height: 8),
+    ];
     for (String label in summary.keys) {
-      summaryRows.add(
+      summaryChildren.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(
@@ -146,16 +154,7 @@ class _SampleListPageState extends State<SampleListPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Resumen por estado',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              ...summaryRows,
-            ],
+            children: summaryChildren,
           ),
         ),
       ),
@@ -163,10 +162,18 @@ class _SampleListPageState extends State<SampleListPage> {
     children.add(const SizedBox(height: 12));
 
     // Pendientes de validación (variante G)
-    final List<Widget> pendingRows = [];
+    final List<Widget> pendingChildren = [
+      Text(
+        'Pendientes de validación',
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+      ),
+      const SizedBox(height: 8),
+    ];
     for (int i = 0; i < pending.length; i++) {
       final Sample sample = pending[i];
-      pendingRows.add(
+      pendingChildren.add(
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(sample.id),
@@ -176,8 +183,8 @@ class _SampleListPageState extends State<SampleListPage> {
         ),
       );
     }
-    if (pendingRows.isEmpty) {
-      pendingRows.add(const Text('No hay muestras en análisis.'));
+    if (pending.isEmpty) {
+      pendingChildren.add(const Text('No hay muestras en análisis.'));
     }
     children.add(
       Card(
@@ -185,16 +192,7 @@ class _SampleListPageState extends State<SampleListPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Pendientes de validación',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              ...pendingRows,
-            ],
+            children: pendingChildren,
           ),
         ),
       ),

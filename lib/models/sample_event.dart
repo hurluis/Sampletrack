@@ -12,4 +12,21 @@ class SampleEvent {
   final String sampleId;
   final String type;
   final DateTime createdAt;
+
+  factory SampleEvent.fromJson(Map<String, dynamic> json) {
+    return SampleEvent(
+      id: json['id'] as String,
+      sampleId: json['sampleId'] as String,
+      type: json['type'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+    );
+  }
+
+  // createdAt en UTC para que no dependa de la zona horaria del dispositivo.
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'sampleId': sampleId,
+        'type': type,
+        'createdAt': createdAt.toUtc().toIso8601String(),
+      };
 }

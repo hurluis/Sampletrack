@@ -19,9 +19,9 @@ class SampleEventLocalDatasource {
     );
   }
 
-  /// Inserta el evento o lo actualiza si ya existe ese id.
-  Future<void> saveEvent(SampleEvent event) {
-    return db.into(db.sampleEvents).insertOnConflictUpdate(
+  /// Upsert: inserta el evento o lo actualiza si ya existe ese id.
+  Future<void> saveEvent(SampleEvent event) async {
+    await db.into(db.sampleEvents).insertOnConflictUpdate(
           SampleEventsCompanion.insert(
             id: event.id,
             sampleId: event.sampleId,
@@ -31,26 +31,22 @@ class SampleEventLocalDatasource {
         );
   }
 
+  /// Guarda en la caché local los eventos traídos de Firestore.
   Future<void> saveEvents(List<SampleEvent> events) async {
-    // ponytail: un upsert por evento; usar db.batch si el volumen crece
     for (final event in events) {
       await saveEvent(event);
     }
   }
 
-  /// Todos los eventos, del más antiguo al más reciente.
   Future<List<SampleEvent>> getAllEvents() async {
-    final rows = await (db.select(db.sampleEvents)
-          ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
-        .get();
+    final rows = await db.select(db.sampleEvents).get();
     return rows.map(_toDomain).toList();
   }
 
-  /// Eventos de una muestra, del más antiguo al más reciente.
+  /// Solo los eventos de una muestra (consulta por sampleId, como movieId).
   Future<List<SampleEvent>> getEventsForSample(String sampleId) async {
     final rows = await (db.select(db.sampleEvents)
-          ..where((t) => t.sampleId.equals(sampleId))
-          ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
+          ..where((t) => t.sampleId.equals(sampleId)))
         .get();
     return rows.map(_toDomain).toList();
   }

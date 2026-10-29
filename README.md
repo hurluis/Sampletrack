@@ -22,27 +22,26 @@ muestra se calcula con el evento más reciente de su `sampleId`.
 - Sección **Pendientes de validación**: muestras en IN_ANALYSIS ordenadas por
   prioridad (Urgente, Alta, Normal).
 
-## Cómo correrlo
-
-El código de Drift se genera (no se escribe a mano). En el PC con Flutter:
+## Cómo correrlo (mismos pasos de la guía de clase)
 
 ```bash
-flutter create . --platforms=windows,web
+flutter create . --platforms=windows
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 flutter run -d windows
 ```
 
-- `flutter create .` solo agrega las carpetas de plataforma que faltan; revisa
-  `git status` para confirmar que no cambió nada en `lib/`.
-- Después de generar, **versionar** `lib/database/app_database.g.dart`.
-- `lib/firebase_options.dart` solo trae **web** y **windows**. Para Android hay
-  que volver a correr `flutterfire configure`.
-- Firestore debe existir en el proyecto `veterinaria-mobile-dev` y permitir
-  lectura y escritura (modo de prueba). La colección `sample_events` se crea
-  con la primera escritura.
-- En **web**, Drift necesita `web/sqlite3.wasm` y `web/drift_worker.js`
-  (copiarlos de la carpeta `web/` del proyecto de Veterinaria).
+- `flutter create .` solo agrega las carpetas de plataforma que faltan (el repo
+  no las trae); revisa `git status` para confirmar que no cambió nada en `lib/`.
+- `build_runner` genera `lib/database/app_database.g.dart`. Después de
+  generarlo, hacerle commit.
+- `lib/firebase_options.dart` (FlutterFire) ya apunta a `veterinaria-mobile-dev`
+  con configuración para **windows** y **web**. Para el Android Emulator hay que
+  agregarlo:
+  `dart pub global run flutterfire_cli:flutterfire configure --project=veterinaria-mobile-dev --platforms=android`
+- Firestore debe estar creado en ese proyecto, en Test mode. La colección
+  `sample_events` la crea la primera escritura.
+- No ejecutar en Chrome: Drift usa `dart:io`, igual que en clase.
 
 ## Pruebas
 
@@ -50,5 +49,5 @@ flutter run -d windows
 flutter test
 ```
 
-`test/sample_status_test.dart` cubre la lógica de estados, transiciones y la
-variante G (no necesita Firebase).
+`test/sample_status_test.dart` cubre estados, transiciones y la variante G (no
+necesita Firebase).

@@ -267,15 +267,7 @@ class _SampleHeader extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: LinearProgressIndicator(value: percent / 100),
-                ),
-                const SizedBox(width: 10),
-                Text('$percent%'),
-              ],
-            ),
+            Text('Progreso: $percent %'),
             const Divider(height: 28),
             Wrap(
               spacing: 24,

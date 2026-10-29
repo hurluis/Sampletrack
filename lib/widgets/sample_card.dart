@@ -74,17 +74,9 @@ class SampleCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: LinearProgressIndicator(value: percent / 100),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '$percent%',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+              Text(
+                'Progreso: $percent %',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),
