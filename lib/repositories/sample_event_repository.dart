@@ -3,8 +3,6 @@ import '../models/sample_event.dart';
 import '../models/sample_status.dart';
 import '../services/sample_event_remote_service.dart';
 
-/// Eventos obtenidos y su origen. [fromLocal] es true cuando Firestore falló y
-/// se muestran los últimos eventos guardados en Drift.
 class EventsResult {
   const EventsResult(this.events, {required this.fromLocal});
 
@@ -12,7 +10,6 @@ class EventsResult {
   final bool fromLocal;
 }
 
-/// La transición pedida no es la siguiente del flujo: no se persiste nada.
 class InvalidTransitionException implements Exception {
   InvalidTransitionException(this.message);
 
@@ -22,15 +19,12 @@ class InvalidTransitionException implements Exception {
   String toString() => message;
 }
 
-/// UI -> Repository -> Firestore (remoto) -> Drift (caché local).
 class SampleEventRepository {
   SampleEventRepository({required this.local, required this.remote});
 
   final SampleEventLocalDatasource local;
   final SampleEventRemoteService remote;
 
-  /// Todos los eventos (el listado calcula el estado de cada muestra con ellos).
-  /// Firestore primero; si falla, los últimos datos de Drift.
   Future<EventsResult> getAllEvents() async {
     List<SampleEvent> events;
     try {
@@ -38,11 +32,10 @@ class SampleEventRepository {
     } catch (_) {
       return EventsResult(await local.getAllEvents(), fromLocal: true);
     }
-    await local.saveEvents(events); // actualiza la caché local
+    await local.saveEvents(events);
     return EventsResult(events, fromLocal: false);
   }
 
-  /// Solo los eventos de [sampleId]. Firestore primero; si falla, Drift.
   Future<EventsResult> getEventsForSample(String sampleId) async {
     List<SampleEvent> events;
     try {
@@ -55,8 +48,6 @@ class SampleEventRepository {
     return EventsResult(events, fromLocal: false);
   }
 
-  /// Valida la transición, guarda en Firestore y solo entonces en Drift.
-  /// Si Firestore falla lanza el error y el evento no queda confirmado.
   Future<SampleEvent> registerEvent(String sampleId, String type) async {
     final current = await getEventsForSample(sampleId);
     final error = validateTransition(currentStatus(current.events), type);
@@ -72,7 +63,7 @@ class SampleEventRepository {
       createdAt: now,
     );
 
-    await remote.saveEvent(event); // si falla, no se escribe en Drift
+    await remote.saveEvent(event);
     await local.saveEvent(event);
     return event;
   }

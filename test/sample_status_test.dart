@@ -82,12 +82,11 @@ void main() {
     final statuses = statusBySample(sampleSeed, events);
 
     final summary = summaryByStatus(statuses);
-    expect(summary['Sin eventos'], 1); // M-1004
-    expect(summary['Recibida'], 1); // M-1003
+    expect(summary['Sin eventos'], 1);
+    expect(summary['Recibida'], 1);
     expect(summary['En análisis'], 3);
     expect(summary['Archivada'], 0);
 
-    // Urgente (M-1005), Alta (M-1001), Normal (M-1002)
     expect(ids(pendingValidation(sampleSeed, statuses)),
         ['M-1005', 'M-1001', 'M-1002']);
   });

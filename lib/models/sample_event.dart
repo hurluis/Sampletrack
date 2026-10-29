@@ -1,5 +1,3 @@
-/// Evento de procesamiento de una muestra. Se relaciona con ella por [sampleId].
-/// No guarda tipo, origen ni prioridad de la muestra: eso viene de la shell.
 class SampleEvent {
   const SampleEvent({
     required this.id,
@@ -22,7 +20,6 @@ class SampleEvent {
     );
   }
 
-  // createdAt en UTC para que no dependa de la zona horaria del dispositivo.
   Map<String, dynamic> toJson() => {
         'id': id,
         'sampleId': sampleId,

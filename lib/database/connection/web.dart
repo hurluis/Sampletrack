@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
 
-/// Web: SQLite en WebAssembly.
-/// Requiere web/sqlite3.wasm y web/drift_worker.js junto a index.html.
 QueryExecutor openConnection() {
   return LazyDatabase(() async {
     final result = await WasmDatabase.open(

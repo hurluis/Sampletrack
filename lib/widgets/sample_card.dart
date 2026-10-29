@@ -13,7 +13,6 @@ class SampleCard extends StatelessWidget {
 
   final Sample sample;
 
-  /// Tipo del evento más reciente; null significa que no tiene eventos.
   final String? status;
   final VoidCallback onTap;
 

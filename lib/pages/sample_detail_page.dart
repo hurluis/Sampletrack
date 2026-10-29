@@ -96,7 +96,6 @@ class _SampleDetailPageState extends State<SampleDetailPage> {
     return number.toString().padLeft(2, '0');
   }
 
-  /// Fecha local con formato dd/MM/yyyy HH:mm, sin paquetes extra.
   String _formatDate(DateTime date) {
     final DateTime local = date.toLocal();
     return '${_two(local.day)}/${_two(local.month)}/${local.year} '

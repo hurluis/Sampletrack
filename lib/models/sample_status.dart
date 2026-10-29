@@ -1,7 +1,6 @@
 import 'sample.dart';
 import 'sample_event.dart';
 
-/// Flujo base: cada evento solo puede seguir al anterior, sin saltar estados.
 const List<String> eventFlow = [
   'RECEIVED',
   'PREPARED',
@@ -10,7 +9,6 @@ const List<String> eventFlow = [
   'ARCHIVED',
 ];
 
-/// Representación de cada evento, en el mismo orden que [eventFlow].
 const List<String> statusLabels = [
   'Recibida',
   'Preparada',
@@ -21,10 +19,8 @@ const List<String> statusLabels = [
 
 const String noEventsLabel = 'Sin eventos';
 
-/// Orden de la cola de validación (variante G).
 const List<String> priorityOrder = ['Urgente', 'Alta', 'Normal'];
 
-/// Posición del evento en el flujo; -1 si es null o no existe.
 int flowIndex(String? type) {
   if (type == null) return -1;
   for (int i = 0; i < eventFlow.length; i++) {
@@ -39,13 +35,11 @@ String statusLabel(String? type) {
   return index == -1 ? type : statusLabels[index];
 }
 
-/// Variante G: RECEIVED 20 %, PREPARED 40 %, ..., ARCHIVED 100 %. Sin eventos 0 %.
 int progressPercent(String? type) {
   final int index = flowIndex(type);
   return index == -1 ? 0 : (index + 1) * 20;
 }
 
-/// Evento más reciente; null si la lista está vacía.
 SampleEvent? latestEvent(List<SampleEvent> events) {
   SampleEvent? latest;
   for (int i = 0; i < events.length; i++) {
@@ -56,19 +50,16 @@ SampleEvent? latestEvent(List<SampleEvent> events) {
   return latest;
 }
 
-/// Estado actual = tipo del evento más reciente (null si no hay eventos).
 String? currentStatus(List<SampleEvent> events) {
   final SampleEvent? latest = latestEvent(events);
   return latest?.type;
 }
 
-/// Siguiente evento válido; null si la muestra ya está en el último estado.
 String? nextEventType(String? currentType) {
   final int next = flowIndex(currentType) + 1;
   return next < eventFlow.length ? eventFlow[next] : null;
 }
 
-/// Devuelve null si la transición es válida; si no, el mensaje para la UI.
 String? validateTransition(String? currentType, String newType) {
   final String? next = nextEventType(currentType);
   if (next == null) {
@@ -81,7 +72,6 @@ String? validateTransition(String? currentType, String newType) {
   return null;
 }
 
-/// Copia ordenada del evento más antiguo al más reciente.
 List<SampleEvent> sortByDate(List<SampleEvent> events) {
   final List<SampleEvent> sorted = [];
   for (int i = 0; i < events.length; i++) {
@@ -95,7 +85,6 @@ List<SampleEvent> sortByDate(List<SampleEvent> events) {
   return sorted;
 }
 
-/// Solo los eventos que pertenecen a la muestra indicada.
 List<SampleEvent> eventsOfSample(List<SampleEvent> events, String sampleId) {
   final List<SampleEvent> result = [];
   for (int i = 0; i < events.length; i++) {
@@ -106,7 +95,6 @@ List<SampleEvent> eventsOfSample(List<SampleEvent> events, String sampleId) {
   return result;
 }
 
-/// sampleId -> tipo del evento más reciente (null si no tiene eventos).
 Map<String, String?> statusBySample(
   List<Sample> samples,
   List<SampleEvent> events,
@@ -119,8 +107,6 @@ Map<String, String?> statusBySample(
   return statuses;
 }
 
-/// Variante G: cantidad de muestras por estado (incluye "Sin eventos").
-/// Las claves son las etiquetas y conservan el orden del flujo.
 Map<String, int> summaryByStatus(Map<String, String?> statuses) {
   final Map<String, int> summary = {noEventsLabel: 0};
   for (int i = 0; i < statusLabels.length; i++) {
@@ -133,7 +119,6 @@ Map<String, int> summaryByStatus(Map<String, String?> statuses) {
   return summary;
 }
 
-/// Posición de la prioridad en [priorityOrder]; las desconocidas van al final.
 int priorityRank(String priority) {
   for (int i = 0; i < priorityOrder.length; i++) {
     if (priorityOrder[i] == priority) return i;
@@ -141,8 +126,6 @@ int priorityRank(String priority) {
   return priorityOrder.length;
 }
 
-/// Variante G: muestras en IN_ANALYSIS ordenadas por prioridad
-/// (Urgente, Alta, Normal).
 List<Sample> pendingValidation(
   List<Sample> samples,
   Map<String, String?> statuses,

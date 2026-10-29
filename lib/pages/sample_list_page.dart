@@ -121,7 +121,6 @@ class _SampleListPageState extends State<SampleListPage> {
       children.add(const SizedBox(height: 12));
     }
 
-    // Resumen por estado
     final List<Widget> summaryChildren = [
       Text(
         'Resumen por estado',
@@ -161,7 +160,6 @@ class _SampleListPageState extends State<SampleListPage> {
     );
     children.add(const SizedBox(height: 12));
 
-    // Pendientes de validación (variante G)
     final List<Widget> pendingChildren = [
       Text(
         'Pendientes de validación',
@@ -199,7 +197,6 @@ class _SampleListPageState extends State<SampleListPage> {
     );
     children.add(const SizedBox(height: 20));
 
-    // Muestras
     children.add(
       Text(
         'Muestras',

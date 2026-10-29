@@ -5,5 +5,4 @@ class AnimalNoteLocalDatasource {
 
     AnimalNoteLocalDatasource(this.db);
 
-
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Aviso que se muestra cuando Firestore falló y los datos vienen de Drift.
 class LocalDataNotice extends StatelessWidget {
   const LocalDataNotice({super.key});
 
