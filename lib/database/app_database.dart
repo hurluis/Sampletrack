@@ -1,19 +1,15 @@
 import 'package:drift/drift.dart';
 
-/// Punto de inicio para la persistencia local del examen.
-///
-/// La shell no incluye Drift como dependencia. Este archivo compila sin Drift
-/// para que la aplicacion inicial pueda ejecutarse. Durante el examen se debe
-/// transformar esta clase en la base de datos requerida por el enunciado.
+import 'connection/connection.dart';
+import 'sample_events_table.dart';
 
+part 'app_database.g.dart';
+
+/// Base de datos local (Drift). El código generado va en app_database.g.dart.
 @DriftDatabase(tables: [SampleEvents])
-class AppDatabase {
-  // TODO: agregar la configuracion de persistencia local requerida.
-  AppDatabase(): super(openConnection());
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(openConnection());
 
   @override
   int get schemaVersion => 1;
-
-  // TODO: crear e incluir la estructura solicitada por el enunciado.
-  // TODO: implementar las operaciones locales necesarias.
 }

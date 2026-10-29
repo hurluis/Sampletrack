@@ -1,14 +1,14 @@
 import 'package:drift/drift.dart';
 
+/// Tabla local de eventos de muestras (caché de Firestore).
 @DataClassName('SampleEventRow')
-class SampleEventsTable extends Table {
-    TextColumn get sampleId => text()();
-    TextColumn get event => note()();
-    DateTimeColumn get createdAt => dateTime()();
+class SampleEvents extends Table {
+  TextColumn get id => text()();
+  TextColumn get sampleId => text()();
+  TextColumn get type => text()();
+  DateTimeColumn get createdAt => dateTime()();
 
-    BoolColumn get pendingSync => boolean()
-        .withDefault(const Constant(true))();
-
-    @override
-    Set<Column> get primaryKey => { sampleId };
+  // La PK es id (una fila por evento), nunca sampleId: así se guarda el historial.
+  @override
+  Set<Column> get primaryKey => {id};
 }
